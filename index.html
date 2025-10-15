@@ -71,6 +71,12 @@
     .incorrecto {
       color: #e63946;
     }
+
+    .intentos {
+      margin-top: 10px;
+      font-size: 16px;
+      color: #555;
+    }
   </style>
 </head>
 <body>
@@ -78,22 +84,27 @@
   <div class="game-container">
     <p>Estoy pensando en un número del <strong>1 al 10</strong>.</p>
     <p>¿Podrás adivinarlo?</p>
+
     <input type="number" id="intento" placeholder="Escribe tu número aquí">
     <br>
     <button onclick="adivinar()">Adivinar</button>
+
+    <div id="intentosRestantes" class="intentos">Intentos restantes: 3</div>
     <div id="mensaje" class="mensaje"></div>
   </div>
 
   <script>
-    // Generar número aleatorio del 1 al 10
     const numeroSecreto = Math.floor(Math.random() * 10) + 1;
-    let intentos = 0;
+    let intentos = 3;
+    let juegoTerminado = false;
 
     function adivinar() {
       const input = document.getElementById("intento");
       const mensaje = document.getElementById("mensaje");
+      const intentosRestantes = document.getElementById("intentosRestantes");
       const numeroUsuario = parseInt(input.value);
-      intentos++;
+
+      if (juegoTerminado) return;
 
       if (isNaN(numeroUsuario) || numeroUsuario < 1 || numeroUsuario > 10) {
         mensaje.textContent = "Por favor, escribe un número válido entre 1 y 10.";
@@ -102,14 +113,25 @@
       }
 
       if (numeroUsuario === numeroSecreto) {
-        mensaje.textContent = `🎉 ¡Correcto! El número era ${numeroSecreto}. Lo lograste en ${intentos} intento(s).`;
+        mensaje.textContent = `🎉 ¡Correcto! El número era ${numeroSecreto}. ¡Ganaste!`;
         mensaje.className = "mensaje correcto";
-      } else if (numeroUsuario < numeroSecreto) {
-        mensaje.textContent = "📉 El número es más alto.";
+        juegoTerminado = true;
+        return;
+      }
+
+      intentos--;
+
+      if (intentos > 0) {
+        mensaje.textContent = numeroUsuario < numeroSecreto
+          ? "📉 El número es más alto."
+          : "📈 El número es más bajo.";
         mensaje.className = "mensaje incorrecto";
+        intentosRestantes.textContent = `Intentos restantes: ${intentos}`;
       } else {
-        mensaje.textContent = "📈 El número es más bajo.";
+        mensaje.textContent = `😢 ¡Perdiste! El número era ${numeroSecreto}.`;
         mensaje.className = "mensaje incorrecto";
+        intentosRestantes.textContent = `Intentos restantes: 0`;
+        juegoTerminado = true;
       }
     }
   </script>
