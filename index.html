@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Juego de Adivinar el Número</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #fce1e4, #d4f1f4, #fef6c9);
+      font-family: "Poppins", sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      color: #333;
+      text-align: center;
+    }
+
+    h1 {
+      background-color: #fff;
+      padding: 15px 30px;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      color: #444;
+    }
+
+    .game-container {
+      background-color: #ffffffb0;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      width: 320px;
+    }
+
+    input {
+      padding: 10px;
+      border-radius: 10px;
+      border: 2px solid #a8dadc;
+      width: 80%;
+      font-size: 16px;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    button {
+      background-color: #f9c5d1;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #f7a8b8;
+    }
+
+    .mensaje {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .correcto {
+      color: #2a9d8f;
+    }
+
+    .incorrecto {
+      color: #e63946;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎲 Juego: Adivina el Número 🎯</h1>
+  <div class="game-container">
+    <p>Estoy pensando en un número del <strong>1 al 10</strong>.</p>
+    <p>¿Podrás adivinarlo?</p>
+    <input type="number" id="intento" placeholder="Escribe tu número aquí">
+    <br>
+    <button onclick="adivinar()">Adivinar</button>
+    <div id="mensaje" class="mensaje"></div>
+  </div>
+
+  <script>
+    // Generar número aleatorio del 1 al 10
+    const numeroSecreto = Math.floor(Math.random() * 10) + 1;
+    let intentos = 0;
+
+    function adivinar() {
+      const input = document.getElementById("intento");
+      const mensaje = document.getElementById("mensaje");
+      const numeroUsuario = parseInt(input.value);
+      intentos++;
+
+      if (isNaN(numeroUsuario) || numeroUsuario < 1 || numeroUsuario > 10) {
+        mensaje.textContent = "Por favor, escribe un número válido entre 1 y 10.";
+        mensaje.className = "mensaje incorrecto";
+        return;
+      }
+
+      if (numeroUsuario === numeroSecreto) {
+        mensaje.textContent = `🎉 ¡Correcto! El número era ${numeroSecreto}. Lo lograste en ${intentos} intento(s).`;
+        mensaje.className = "mensaje correcto";
+      } else if (numeroUsuario < numeroSecreto) {
+        mensaje.textContent = "📉 El número es más alto.";
+        mensaje.className = "mensaje incorrecto";
+      } else {
+        mensaje.textContent = "📈 El número es más bajo.";
+        mensaje.className = "mensaje incorrecto";
+      }
+    }
+  </script>
+</body>
+</html>
